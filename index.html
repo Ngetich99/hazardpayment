@@ -88,14 +88,58 @@
   </header>
 
   <div class="container">
-    <!-- Fire Safety Course -->
+    <!-- Fire Safety -->
     <div class="course">
       <img src="firesafety.jpeg" alt="Fire Safety">
       <div class="content">
         <h3>Fire Safety Training</h3>
         <p>Learn essential fire prevention and response skills.</p>
-        <input id="email" type="email" placeholder="Enter your email" required />
-        <button onclick="payWithPaystack('Fire Safety Training', 10)">Enroll & Pay KES 10</button>
+        <input id="fire_email" type="email" placeholder="Enter your email" required />
+        <button onclick="payWithPaystack('Fire Safety Training', 'fire_email', 10)">Enroll & Pay KES 10</button>
+      </div>
+    </div>
+
+    <!-- Occupational Safety -->
+    <div class="course">
+      <img src="occupational.jpg" alt="Occupational Safety">
+      <div class="content">
+        <h3>Occupational Safety & Health</h3>
+        <p>Master workplace safety and compliance standards.</p>
+        <input id="occupational_email" type="email" placeholder="Enter your email" required />
+        <button onclick="payWithPaystack('Occupational Safety & Health', 'occupational_email', 10)">Enroll & Pay KES 10</button>
+      </div>
+    </div>
+
+    <!-- First Aid -->
+    <div class="course">
+      <img src="firstaid.jpg" alt="First Aid">
+      <div class="content">
+        <h3>First Aid Training</h3>
+        <p>Gain lifesaving emergency response skills.</p>
+        <input id="firstaid_email" type="email" placeholder="Enter your email" required />
+        <button onclick="payWithPaystack('First Aid Training', 'firstaid_email', 10)">Enroll & Pay KES 10</button>
+      </div>
+    </div>
+
+    <!-- Fire Marshal -->
+    <div class="course">
+      <img src="firemarshal.jpg" alt="Fire Marshal">
+      <div class="content">
+        <h3>Fire Marshal Training</h3>
+        <p>Become certified as a fire marshal and safety leader.</p>
+        <input id="marshal_email" type="email" placeholder="Enter your email" required />
+        <button onclick="payWithPaystack('Fire Marshal Training', 'marshal_email', 10)">Enroll & Pay KES 10</button>
+      </div>
+    </div>
+
+    <!-- Safety Management -->
+    <div class="course">
+      <img src="safetymgmt.jpg" alt="Safety Management">
+      <div class="content">
+        <h3>Safety Management Systems</h3>
+        <p>Develop and manage effective safety programs.</p>
+        <input id="management_email" type="email" placeholder="Enter your email" required />
+        <button onclick="payWithPaystack('Safety Management Systems', 'management_email', 10)">Enroll & Pay KES 10</button>
       </div>
     </div>
   </div>
@@ -110,21 +154,20 @@
   <script>
     emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
 
-    function payWithPaystack(course, amount) {
-      const studentEmail = document.getElementById("email").value;
+    function payWithPaystack(course, emailId, amount) {
+      const studentEmail = document.getElementById(emailId).value;
       if (!studentEmail) {
         alert("Please enter your email before paying.");
         return;
       }
 
       let handler = PaystackPop.setup({
-        key: 'pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d', // your Paystack live key
+        key: 'pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d', // Your Paystack key
         email: studentEmail,
-        amount: amount * 100, // amount in kobo
+        amount: amount * 100,
         currency: 'KES',
         ref: 'HCT' + Math.floor((Math.random() * 1000000000) + 1),
-        callback: function(response) {
-          // No redirect — just email the link
+        callback: function() {
           sendCourseLink(studentEmail, course);
           alert("Payment successful! The course link has been sent to your email.");
         },
@@ -138,8 +181,22 @@
     function sendCourseLink(email, course) {
       let courseLink = "";
 
-      if (course === "Fire Safety Training") {
-        courseLink = "https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5";
+      switch (course) {
+        case "Fire Safety Training":
+          courseLink = "https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5";
+          break;
+        case "Occupational Safety & Health":
+          courseLink = "https://classroom.google.com/c/PLACE_OCCUPATIONAL_LINK";
+          break;
+        case "First Aid Training":
+          courseLink = "https://classroom.google.com/c/PLACE_FIRSTAID_LINK";
+          break;
+        case "Fire Marshal Training":
+          courseLink = "https://classroom.google.com/c/PLACE_FIREMARSHAL_LINK";
+          break;
+        case "Safety Management Systems":
+          courseLink = "https://classroom.google.com/c/PLACE_SAFETYMGMT_LINK";
+          break;
       }
 
       const params = {
@@ -149,12 +206,8 @@
       };
 
       emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", params)
-        .then(() => {
-          console.log("Email sent successfully to " + email);
-        })
-        .catch((error) => {
-          console.error("Email sending failed:", error);
-        });
+        .then(() => console.log("Email sent successfully to " + email))
+        .catch((error) => console.error("Email sending failed:", error));
     }
   </script>
 </body>
