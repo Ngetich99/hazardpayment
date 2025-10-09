@@ -86,7 +86,9 @@
       <div class="content">
         <h3>Fire Safety Training</h3>
         <p>Learn essential fire prevention and response skills.</p>
-        <button onclick="payWithPaystack('Fire Safety Training', 10)">Enroll & Pay KES 10</button>
+        <button onclick="payWithPaystack('Fire Safety Training', 10, 'https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5')">
+          Enroll & Pay KES 10
+        </button>
       </div>
     </div>
 
@@ -95,7 +97,9 @@
       <div class="content">
         <h3>First Aid Training</h3>
         <p>Be prepared to save lives in case of emergencies.</p>
-        <button onclick="payWithPaystack('First Aid Training', 1200)">Enroll & Pay KES 1200</button>
+        <button onclick="payWithPaystack('First Aid Training', 1200, 'https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5')">
+          Enroll & Pay KES 1200
+        </button>
       </div>
     </div>
 
@@ -104,7 +108,9 @@
       <div class="content">
         <h3>Occupational Safety & Health (OSH)</h3>
         <p>Comprehensive workplace safety certification course.</p>
-        <button onclick="payWithPaystack('OSH Training', 1500)">Enroll & Pay KES 1500</button>
+        <button onclick="payWithPaystack('OSH Training', 1500, 'https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5')">
+          Enroll & Pay KES 1500
+        </button>
       </div>
     </div>
 
@@ -113,7 +119,9 @@
       <div class="content">
         <h3>Fire Marshalling Training</h3>
         <p>Train to lead emergency evacuations and fire control.</p>
-        <button onclick="payWithPaystack('Fire Marshalling', 1800)">Enroll & Pay KES 1800</button>
+        <button onclick="payWithPaystack('Fire Marshalling', 1800, 'https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5')">
+          Enroll & Pay KES 1800
+        </button>
       </div>
     </div>
   </div>
@@ -124,25 +132,21 @@
 
   <script src="https://js.paystack.co/v1/inline.js"></script>
   <script>
-    function payWithPaystack(course, amount) {
+    function payWithPaystack(course, amount, redirectLink) {
       let handler = PaystackPop.setup({
         key: 'pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d', // Replace with your real Paystack public key
         email: 'student@example.com',
-        amount: amount * 100, // Convert KES to kobo
+        amount: amount * 100,
         currency: 'KES',
         ref: 'HCT' + Math.floor((Math.random() * 1000000000) + 1),
         metadata: {
           custom_fields: [
-            {
-              display_name: "Course",
-              variable_name: "course",
-              value: course
-            }
+            { display_name: "Course", variable_name: "course", value: course }
           ]
         },
         callback: function(response) {
-          alert('Payment complete! Reference: ' + response.reference);
-          window.location.href = "https://classroom.google.com"; // redirect to Google Classroom
+          alert('Payment successful! Ref: ' + response.reference);
+          window.location.href = redirectLink;
         },
         onClose: function() {
           alert('Payment window closed.');
@@ -153,6 +157,3 @@
   </script>
 </body>
 </html>
-
-
-
