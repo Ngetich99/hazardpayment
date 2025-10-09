@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hazard Control Training Portal</title>
+  <link rel="icon" href="hazard.png" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #fff;
+      color: #333;
+    }
+    header {
+      background-color: #c82333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    header img {
+      width: 80px;
+      vertical-align: middle;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 30px;
+    }
+    .course {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: 0.3s;
+      background: white;
+    }
+    .course:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .course img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    .content {
+      padding: 15px;
+      text-align: center;
+    }
+    .content h3 {
+      color: #c82333;
+    }
+    button {
+      background-color: #c82333;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+    button:hover {
+      background-color: #a71d2a;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #c82333;
+      color: white;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="hazard.png" alt="Hazard Logo" />
+    <h1>Hazard Control Training Portal</h1>
+    <p>Enroll in our certified safety and health courses</p>
+  </header>
+
+  <div class="container">
+    <div class="course">
+      <img src="src/mashal.jpeg" alt="Fire Safety">
+      <div class="content">
+        <h3>Fire Safety Training</h3>
+        <p>Learn essential fire prevention and response skills.</p>
+        <button onclick="payWithPaystack('Fire Safety Training', 1000)">Enroll & Pay KES 1000</button>
+      </div>
+    </div>
+
+    <div class="course">
+      <img src="src/first aid.jpeg" alt="First Aid">
+      <div class="content">
+        <h3>First Aid Training</h3>
+        <p>Be prepared to save lives in case of emergencies.</p>
+        <button onclick="payWithPaystack('First Aid Training', 1200)">Enroll & Pay KES 1200</button>
+      </div>
+    </div>
+
+    <div class="course">
+      <img src="src/osha.jpeg" alt="OSH Training">
+      <div class="content">
+        <h3>Occupational Safety & Health (OSH)</h3>
+        <p>Comprehensive workplace safety certification course.</p>
+        <button onclick="payWithPaystack('OSH Training', 1500)">Enroll & Pay KES 1500</button>
+      </div>
+    </div>
+
+    <div class="course">
+      <img src="src/firesafety.jpeg" alt="Fire Marshalling">
+      <div class="content">
+        <h3>Fire Marshalling Training</h3>
+        <p>Train to lead emergency evacuations and fire control.</p>
+        <button onclick="payWithPaystack('Fire Marshalling', 1800)">Enroll & Pay KES 1800</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Hazard Control Technologies Ltd. All rights reserved.
+  </footer>
+
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script>
+    function payWithPaystack(course, amount) {
+      let handler = PaystackPop.setup({
+        key: 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxx', // Replace with your real Paystack public key
+        email: 'student@example.com',
+        amount: amount * 100, // Convert KES to kobo
+        currency: 'KES',
+        ref: 'HCT' + Math.floor((Math.random() * 1000000000) + 1),
+        metadata: {
+          custom_fields: [
+            {
+              display_name: "Course",
+              variable_name: "course",
+              value: course
+            }
+          ]
+        },
+        callback: function(response) {
+          alert('Payment complete! Reference: ' + response.reference);
+          window.location.href = "https://classroom.google.com"; // redirect to Google Classroom
+        },
+        onClose: function() {
+          alert('Payment window closed.');
+        }
+      });
+      handler.openIframe();
+    }
+  </script>
+</body>
+</html>
