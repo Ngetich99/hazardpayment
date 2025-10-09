@@ -4,213 +4,147 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hazard Control Training Portal</title>
-  <link rel="icon" href="hazard.png" />
+  <link rel="icon" type="image/png" href="hazard.png">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff5f5;
       color: #333;
+      margin: 0;
+      padding: 0;
     }
     header {
-      background-color: #c82333;
+      background-color: #b30000;
       color: white;
       text-align: center;
-      padding: 20px;
-    }
-    header img {
-      width: 80px;
-      vertical-align: middle;
+      padding: 20px 0;
     }
     .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 30px;
+      width: 90%;
+      max-width: 800px;
+      margin: 30px auto;
+      text-align: center;
     }
     .course {
       border: 1px solid #ddd;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: 0.3s;
       background: white;
-    }
-    .course:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      margin: 15px 0;
+      padding: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     .course img {
       width: 100%;
-      height: 160px;
+      max-height: 200px;
+      border-radius: 8px;
       object-fit: cover;
     }
-    .content {
-      padding: 15px;
-      text-align: center;
-    }
-    .content h3 {
-      color: #c82333;
-    }
-    input {
-      padding: 8px;
-      width: 90%;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+    .course h3 {
+      color: #b30000;
     }
     button {
-      background-color: #c82333;
-      border: none;
+      background-color: #b30000;
       color: white;
-      padding: 10px 15px;
-      cursor: pointer;
+      border: none;
+      padding: 10px 20px;
       border-radius: 5px;
-      font-size: 15px;
+      cursor: pointer;
+      margin-top: 10px;
     }
     button:hover {
-      background-color: #a71d2a;
+      background-color: #800000;
     }
-    footer {
-      text-align: center;
-      padding: 15px;
-      background-color: #c82333;
-      color: white;
-      font-size: 14px;
+    input {
+      padding: 10px;
+      width: 80%;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="hazard.png" alt="Hazard Logo" />
+    <img src="hazard.png" alt="Hazard Logo" width="80">
     <h1>Hazard Control Training Portal</h1>
-    <p>Enroll in our certified safety and health courses</p>
+    <p>Enroll and receive your classroom access via email</p>
   </header>
 
   <div class="container">
-    <!-- Fire Safety -->
+    <h2>Choose Your Course</h2>
+    <input type="email" id="email" placeholder="Enter your email" required /><br>
+
     <div class="course">
-      <img src="firesafety.jpeg" alt="Fire Safety">
-      <div class="content">
-        <h3>Fire Safety Training</h3>
-        <p>Learn essential fire prevention and response skills.</p>
-        <input id="fire_email" type="email" placeholder="Enter your email" required />
-        <button onclick="payWithPaystack('Fire Safety Training', 'fire_email', 1)">Enroll & Pay KES 1</button>
-      </div>
+      <img src="fire_safety.jpg" alt="Fire Safety">
+      <h3>Fire Safety</h3>
+      <p>Learn essential skills for preventing and handling fire emergencies.</p>
+      <button onclick="payWithPaystack('Fire Safety', 'https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5')">Pay KES 500</button>
     </div>
 
-    <!-- Occupational Safety -->
     <div class="course">
-      <img src="occupational.jpg" alt="Occupational Safety">
-      <div class="content">
-        <h3>Occupational Safety & Health</h3>
-        <p>Master workplace safety and compliance standards.</p>
-        <input id="occupational_email" type="email" placeholder="Enter your email" required />
-        <button onclick="payWithPaystack('Occupational Safety & Health', 'occupational_email', 10)">Enroll & Pay KES 10</button>
-      </div>
+      <img src="first_aid.jpg" alt="First Aid Training">
+      <h3>First Aid Training</h3>
+      <p>Gain lifesaving first aid skills to handle emergencies effectively.</p>
+      <button onclick="payWithPaystack('First Aid Training', 'https://example.com/firstaid')">Pay KES 500</button>
     </div>
 
-    <!-- First Aid -->
     <div class="course">
-      <img src="first aid.jpeg" alt="First Aid">
-      <div class="content">
-        <h3>First Aid Training</h3>
-        <p>Gain lifesaving emergency response skills.</p>
-        <input id="firstaid_email" type="email" placeholder="Enter your email" required />
-        <button onclick="payWithPaystack('First Aid Training', 'firstaid_email', 10)">Enroll & Pay KES 10</button>
-      </div>
+      <img src="osh.jpg" alt="Occupational Safety and Health">
+      <h3>Occupational Safety and Health (OSH)</h3>
+      <p>Comprehensive course on workplace safety and compliance.</p>
+      <button onclick="payWithPaystack('Occupational Safety and Health', 'https://example.com/osh')">Pay KES 500</button>
     </div>
 
-    <!-- Fire Marshal -->
     <div class="course">
-      <img src="firemashal.jpg" alt="Fire Marshal">
-      <div class="content">
-        <h3>Fire Marshal Training</h3>
-        <p>Become certified as a fire marshal and safety leader.</p>
-        <input id="marshal_email" type="email" placeholder="Enter your email" required />
-        <button onclick="payWithPaystack('Fire Marshal Training', 'marshal_email', 10)">Enroll & Pay KES 10</button>
-      </div>
-    </div>
-
-    <!-- Safety Management -->
-    <div class="course">
-      <img src="safetymgmt.jpg" alt="Safety Management">
-      <div class="content">
-        <h3>Safety Management Systems</h3>
-        <p>Develop and manage effective safety programs.</p>
-        <input id="management_email" type="email" placeholder="Enter your email" required />
-        <button onclick="payWithPaystack('Safety Management Systems', 'management_email', 10)">Enroll & Pay KES 10</button>
-      </div>
+      <img src="fire_marshal.jpg" alt="Fire Marshalling">
+      <h3>Fire Marshalling</h3>
+      <p>Become a certified fire marshal and lead safety drills confidently.</p>
+      <button onclick="payWithPaystack('Fire Marshalling', 'https://example.com/firemarshal')">Pay KES 500</button>
     </div>
   </div>
 
-  <footer>
-    © 2025 Hazard Control Technologies Ltd. All rights reserved.
-  </footer>
-
-  <!-- Paystack + EmailJS -->
+  <!-- Paystack & EmailJS Scripts -->
   <script src="https://js.paystack.co/v1/inline.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+    (function() {
+      emailjs.init("tg13-Ajy-n76qkEkK"); // Your EmailJS Public Key
+    })();
 
-    function payWithPaystack(course, emailId, amount) {
-      const studentEmail = document.getElementById(emailId).value;
-      if (!studentEmail) {
-        alert("Please enter your email before paying.");
+    function payWithPaystack(course, classroomLink) {
+      const email = document.getElementById("email").value;
+      if (!email) {
+        alert("Please enter your email before payment.");
         return;
       }
 
       let handler = PaystackPop.setup({
-        key: 'pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d', // Your Paystack key
-        email: studentEmail,
-        amount: amount * 100,
+        key: 'pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d', // Replace with your Paystack Public Key
+        email: email,
+        amount: 500 * 100,
         currency: 'KES',
-        ref: 'HCT' + Math.floor((Math.random() * 1000000000) + 1),
-        callback: function() {
-          sendCourseLink(studentEmail, course);
-          alert("Payment successful! The course link has been sent to your email.");
+        callback: function(response) {
+          // Send email via EmailJS
+          const templateParams = {
+            to_email: email,
+            course_name: course,
+            classroom_link: classroomLink,
+          };
+
+          emailjs.send('service_pf20md9', 'template_wmueohd', templateParams)
+          .then(function() {
+            alert('Payment successful! Classroom link sent to your email.');
+          }, function(error) {
+            alert('Payment succeeded but email failed to send: ' + JSON.stringify(error));
+          });
         },
         onClose: function() {
-          alert('Payment window closed.');
+          alert('Payment cancelled.');
         }
       });
+
       handler.openIframe();
-    }
-
-    function sendCourseLink(email, course) {
-      let courseLink = "";
-
-      switch (course) {
-        case "Fire Safety Training":
-          courseLink = "https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5";
-          break;
-        case "Occupational Safety & Health":
-          courseLink = "https://classroom.google.com/c/PLACE_OCCUPATIONAL_LINK";
-          break;
-        case "First Aid Training":
-          courseLink = "https://classroom.google.com/c/PLACE_FIRSTAID_LINK";
-          break;
-        case "Fire Marshal Training":
-          courseLink = "https://classroom.google.com/c/PLACE_FIREMARSHAL_LINK";
-          break;
-        case "Safety Management Systems":
-          courseLink = "https://classroom.google.com/c/PLACE_SAFETYMGMT_LINK";
-          break;
-      }
-
-      const params = {
-        to_email: email,
-        subject: "Your " + course + " Enrollment Link",
-        message: `Dear Student,\n\nThank you for enrolling in ${course}!\n\nClick below to join your class:\n${courseLink}\n\nBest regards,\nHazard Control Training Portal`
-      };
-
-      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", params)
-        .then(() => console.log("Email sent successfully to " + email))
-        .catch((error) => console.error("Email sending failed:", error));
     }
   </script>
 </body>
 </html>
-
-
