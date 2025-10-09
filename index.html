@@ -1,151 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hazard Control Training Portal</title>
-  <link rel="icon" type="image/png" href="hazard.png">
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fff5f5;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #b30000;
-      color: white;
-      text-align: center;
-      padding: 20px 0;
-    }
-    .container {
-      width: 90%;
-      max-width: 800px;
-      margin: 30px auto;
-      text-align: center;
-    }
-    .course {
-      border: 1px solid #ddd;
-      background: white;
-      border-radius: 10px;
-      margin: 15px 0;
-      padding: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .course img {
-      width: 100%;
-      max-height: 200px;
-      border-radius: 8px;
-      object-fit: cover;
-    }
-    .course h3 {
-      color: #b30000;
-    }
-    button {
-      background-color: #b30000;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #800000;
-    }
-    input {
-      padding: 10px;
-      width: 80%;
-      margin: 5px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <img src="hazard.png" alt="Hazard Logo" width="80">
-    <h1>Hazard Control Training Portal</h1>
-    <p>Enroll and receive your classroom access </p>
-  </header>
-
-  <div class="container">
-    <h2>Choose Your Course</h2>
-    <input type="email" id="email" placeholder="Enter your email" required /><br>
-
-    <div class="course">
-      <img src="firesafety.jpg" alt="Fire Safety">
-      <h3>Fire Safety</h3>
-      <p>Learn essential skills for preventing and handling fire emergencies.</p>
-      <button onclick="payWithPaystack('Fire Safety', 'https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5')">Pay KES 500</button>
-    </div>
-
-    <div class="course">
-      <img src="first aid.jpeg" alt="First Aid Training">
-      <h3>First Aid Training</h3>
-      <p>Gain lifesaving first aid skills to handle emergencies effectively.</p>
-      <button onclick="payWithPaystack('First Aid Training', 'https://example.com/firstaid')">Pay KES 500</button>
-    </div>
-
-    <div class="course">
-      <img src="osha.jpeg" alt="Occupational Safety and Health">
-      <h3>Occupational Safety and Health (OSH)</h3>
-      <p>Comprehensive course on workplace safety and compliance.</p>
-      <button onclick="payWithPaystack('Occupational Safety and Health', 'https://example.com/osh')">Pay KES 500</button>
-    </div>
-
-    <div class="course">
-      <img src="mashal.jpeg" alt="Fire Marshalling">
-      <h3>Fire Marshalling</h3>
-      <p>Become a certified fire marshal and lead safety drills confidently.</p>
-      <button onclick="payWithPaystack('Fire Marshalling', 'https://example.com/firemarshal')">Pay KES 500</button>
-    </div>
-  </div>
-
-  <!-- Paystack & EmailJS Scripts -->
-  <script src="https://js.paystack.co/v1/inline.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script>
-    (function() {
-      emailjs.init("tg13-Ajy-n76qkEkK"); // Your EmailJS Public Key
-    })();
-
-    function payWithPaystack(course, classroomLink) {
-      const email = document.getElementById("email").value;
-      if (!email) {
-        alert("Please enter your email before payment.");
-        return;
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Course Enrollment Confirmation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f6f6f6;
+        margin: 0;
+        padding: 0;
       }
+      .container {
+        max-width: 600px;
+        margin: 30px auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background-color: #c82333;
+        color: white;
+        text-align: center;
+        padding: 20px;
+      }
+      .header img {
+        width: 80px;
+        margin-bottom: 10px;
+      }
+      .content {
+        padding: 25px;
+        line-height: 1.6;
+        color: #333;
+      }
+      .content h2 {
+        color: #c82333;
+      }
+      .button {
+        display: inline-block;
+        background-color: #c82333;
+        color: white;
+        padding: 12px 20px;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+      }
+      .footer {
+        background-color: #f1f1f1;
+        text-align: center;
+        padding: 15px;
+        font-size: 13px;
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="https://yourwebsite.com/hazard.png" alt="Hazard Control Logo" />
+        <h1>Hazard Control Training Portal</h1>
+      </div>
+      <div class="content">
+        <h2>Hello {{to_name}},</h2>
+        <p>Thank you for enrolling in <strong>{{course}}</strong>!</p>
+        <p>We’re excited to have you on board. You can now access your training materials and begin learning by clicking the button below:</p>
 
-      let handler = PaystackPop.setup({
-        key: 'pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d', // Replace with your Paystack Public Key
-        email: email,
-        amount: 500 * 100,
-        currency: 'KES',
-        callback: function(response) {
-          // Send email via EmailJS
-          const templateParams = {
-            to_email: email,
-            course_name: course,
-            classroom_link: classroomLink,
-          };
+        <p style="text-align: center;">
+          <a href="{{course_link}}" target="_blank" class="button">Join Your Classroom</a>
+        </p>
 
-          emailjs.send('service_pf20md9', 'template_wmueohd', templateParams)
-          .then(function() {
-            alert('Payment successful! Classroom link sent to your email.');
-          }, function(error) {
-            alert('Payment succeeded but email failed to send: ' + JSON.stringify(error));
-          });
-        },
-        onClose: function() {
-          alert('Payment cancelled.');
-        }
-      });
+        <p>If the button doesn’t work, copy and paste this link into your browser:</p>
+        <p><a href="{{course_link}}" target="_blank">{{course_link}}</a></p>
 
-      handler.openIframe();
-    }
-  </script>
-</body>
+        <p>For assistance or inquiries, contact us at <a href="mailto:hazardcontroltech@gmail.com">hazardcontroltech@gmail.com</a>.</p>
+
+        <p>Best regards,<br><strong>Hazard Control Technologies Ltd.</strong></p>
+      </div>
+
+      <div class="footer">
+        &copy; 2025 Hazard Control Technologies Ltd. All rights reserved.<br>
+        Safety • Health • Excellence
+      </div>
+    </div>
+  </body>
 </html>
-
