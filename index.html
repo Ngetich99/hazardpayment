@@ -152,7 +152,7 @@
   <script src="https://js.paystack.co/v1/inline.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
-    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+    emailjs.init("tg13-Ajy-n76qkEkK"); // ✅ Your EmailJS Public Key
 
     function payWithPaystack(course, emailId, amount) {
       const studentEmail = document.getElementById(emailId).value;
@@ -162,7 +162,7 @@
       }
 
       let handler = PaystackPop.setup({
-        key: 'pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d', // Your Paystack key
+        key: 'pk_test_yourPaystackPublicKey', // 🔑 Replace with your Paystack Public Key
         email: studentEmail,
         amount: amount * 100,
         currency: 'KES',
@@ -201,11 +201,12 @@
 
       const params = {
         to_email: email,
-        subject: "Your " + course + " Enrollment Link",
-        message: `Dear Student,\n\nThank you for enrolling in ${course}!\n\nClick below to join your class:\n${courseLink}\n\nBest regards,\nHazard Control Training Portal`
+        course_name: course,
+        classroom_link: courseLink
       };
 
-      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", params)
+      // ✅ Send Email using your EmailJS service and template
+      emailjs.send("service_pf20md9", "template_wmueohd", params)
         .then(() => console.log("Email sent successfully to " + email))
         .catch((error) => console.error("Email sending failed:", error));
     }
