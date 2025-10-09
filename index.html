@@ -52,6 +52,13 @@
     .content h3 {
       color: #c82333;
     }
+    input {
+      padding: 8px;
+      width: 90%;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
     button {
       background-color: #c82333;
       border: none;
@@ -81,47 +88,14 @@
   </header>
 
   <div class="container">
+    <!-- Fire Safety Course -->
     <div class="course">
-      <img src="mashal.jpeg" alt="Fire Safety">
+      <img src="firesafety.jpeg" alt="Fire Safety">
       <div class="content">
         <h3>Fire Safety Training</h3>
         <p>Learn essential fire prevention and response skills.</p>
-        <button onclick="payWithPaystack('Fire Safety Training', 1, 'https://classroom.google.com/c/NzcwNzc5ODk4NDg4')">
-          Enroll & Pay KES 1
-        </button>
-      </div>
-    </div>
-
-    <div class="course">
-      <img src="first aid.jpeg" alt="First Aid">
-      <div class="content">
-        <h3>First Aid Training</h3>
-        <p>Be prepared to save lives in case of emergencies.</p>
-        <button onclick="payWithPaystack('First Aid Training', 1200, 'https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5')">
-          Enroll & Pay KES 1200
-        </button>
-      </div>
-    </div>
-
-    <div class="course">
-      <img src="osha.jpeg" alt="OSH Training">
-      <div class="content">
-        <h3>Occupational Safety & Health (OSH)</h3>
-        <p>Comprehensive workplace safety certification course.</p>
-        <button onclick="payWithPaystack('OSH Training', 1500, 'https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5')">
-          Enroll & Pay KES 1500
-        </button>
-      </div>
-    </div>
-
-    <div class="course">
-      <img src="firesafety.jpeg" alt="Fire Marshalling">
-      <div class="content">
-        <h3>Fire Marshalling Training</h3>
-        <p>Train to lead emergency evacuations and fire control.</p>
-        <button onclick="payWithPaystack('Fire Marshalling', 1800, 'https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5')">
-          Enroll & Pay KES 1800
-        </button>
+        <input id="email" type="email" placeholder="Enter your email" required />
+        <button onclick="payWithPaystack('Fire Safety Training', 10)">Enroll & Pay KES 10</button>
       </div>
     </div>
   </div>
@@ -130,23 +104,29 @@
     © 2025 Hazard Control Technologies Ltd. All rights reserved.
   </footer>
 
+  <!-- Paystack + EmailJS -->
   <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
-    function payWithPaystack(course, amount, redirectLink) {
+    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+
+    function payWithPaystack(course, amount) {
+      const studentEmail = document.getElementById("email").value;
+      if (!studentEmail) {
+        alert("Please enter your email before paying.");
+        return;
+      }
+
       let handler = PaystackPop.setup({
-        key: 'pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d', // Replace with your real Paystack public key
-        email: 'student@example.com',
-        amount: amount * 100,
+        key: 'pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d', // your Paystack live key
+        email: studentEmail,
+        amount: amount * 100, // amount in kobo
         currency: 'KES',
         ref: 'HCT' + Math.floor((Math.random() * 1000000000) + 1),
-        metadata: {
-          custom_fields: [
-            { display_name: "Course", variable_name: "course", value: course }
-          ]
-        },
         callback: function(response) {
-          alert('Payment successful! Ref: ' + response.reference);
-          window.location.href = redirectLink;
+          // No redirect — just email the link
+          sendCourseLink(studentEmail, course);
+          alert("Payment successful! The course link has been sent to your email.");
         },
         onClose: function() {
           alert('Payment window closed.');
@@ -154,7 +134,28 @@
       });
       handler.openIframe();
     }
+
+    function sendCourseLink(email, course) {
+      let courseLink = "";
+
+      if (course === "Fire Safety Training") {
+        courseLink = "https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5";
+      }
+
+      const params = {
+        to_email: email,
+        subject: "Your " + course + " Enrollment Link",
+        message: `Dear Student,\n\nThank you for enrolling in ${course}!\n\nClick below to join your class:\n${courseLink}\n\nBest regards,\nHazard Control Training Portal`
+      };
+
+      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", params)
+        .then(() => {
+          console.log("Email sent successfully to " + email);
+        })
+        .catch((error) => {
+          console.error("Email sending failed:", error);
+        });
+    }
   </script>
 </body>
 </html>
-
