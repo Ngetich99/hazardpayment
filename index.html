@@ -149,78 +149,85 @@
   </footer>
 
   <!-- Paystack + EmailJS -->
-  <script src="https://js.paystack.co/v1/inline.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>
-    emailjs.init("tg13-Ajy-n76qkEkK"); // ✅ Your EmailJS Public Key
 
-    function payWithPaystack(course, emailId, amount) {
-      const studentEmail = document.getElementById(emailId).value;
-      if (!studentEmail) {
-        alert("Please enter your email before paying.");
+  <!-- ✅ Paystack Inline Script -->
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+
+  <script>
+    // ✅ Initialize EmailJS
+    (function() {
+      emailjs.init({
+        publicKey: "tg13-Ajy-n76qkEkK" // Your public key
+      });
+    })();
+
+    // ✅ Function to send course access email
+    function sendCourseEmail(name, email, course) {
+      // Classroom links for each course
+      const courseLinks = {
+        "Fire Safety": "https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5",
+        "Occupational Safety and Health": "https://classroom.google.com/c/occupational",
+        "First Aid": "https://classroom.google.com/c/firstaid",
+        "Disaster Preparedness": "https://classroom.google.com/c/disaster",
+        "Emergency Evacuation": "https://classroom.google.com/c/emergency"
+      };
+
+      const templateParams = {
+        student_name: name,
+        student_email: email,
+        course_name: course,
+        access_link: courseLinks[course] || "https://hazardcontrol.co.ke/courses"
+      };
+
+      emailjs.send("service_pf20md9", "template_wmueohd", templateParams)
+        .then((response) => {
+          console.log("✅ Email sent:", response);
+          alert("✅ Payment successful! Access link sent to your email.");
+        })
+        .catch((error) => {
+          console.error("❌ Email sending failed:", error);
+          alert("Payment successful, but failed to send email. Please contact support.");
+        });
+    }
+
+    // ✅ Function to handle Paystack payment
+    function payWithPaystack() {
+      const name = document.getElementById("student_name").value;
+      const email = document.getElementById("student_email").value;
+      const course = document.getElementById("course_name").value;
+
+      if (!name || !email || !course) {
+        alert("Please fill all fields before continuing.");
         return;
       }
 
+      // Example: each course = KES 1000 (1000 * 100 = amount in kobo)
+      const amountKES = 1000;
+      const amountKobo = amountKES * 100;
+
       let handler = PaystackPop.setup({
-        key: 'pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d', // 🔑 Replace with your Paystack Public Key
-        email: studentEmail,
-        amount: amount * 100,
-        currency: 'KES',
-        ref: 'HCT' + Math.floor((Math.random() * 1000000000) + 1),
-        callback: function() {
-          sendCourseLink(studentEmail, course);
-          alert("Payment successful! The course link has been sent to your email.");
+        key: "pk_test_xxxxxxxxxxxxxxxxxxxxxxxxx", // Replace with your Paystack public key
+        email: email,
+        amount: amountKobo,
+        currency: "KES",
+        ref: "HZD" + Math.floor(Math.random() * 1000000000),
+        callback: function(response) {
+          console.log("Payment complete! Reference: " + response.reference);
+          sendCourseEmail(name, email, course);
         },
         onClose: function() {
-          alert('Payment window closed.');
+          alert("Payment window closed.");
         }
       });
+
       handler.openIframe();
     }
-
-    function sendCourseLink(email, course) {
-      let courseLink = "";
-
-      switch (course) {
-        case "Fire Safety Training":
-          courseLink = "https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5";
-          break;
-        case "Occupational Safety & Health":
-          courseLink = "https://classroom.google.com/c/PLACE_OCCUPATIONAL_LINK";
-          break;
-        case "First Aid Training":
-          courseLink = "https://classroom.google.com/c/PLACE_FIRSTAID_LINK";
-          break;
-        case "Fire Marshal Training":
-          courseLink = "https://classroom.google.com/c/PLACE_FIREMARSHAL_LINK";
-          break;
-        case "Safety Management Systems":
-          courseLink = "https://classroom.google.com/c/PLACE_SAFETYMGMT_LINK";
-          break;
-      }
-
-      const params = {
-        to_email: email,
-        course_name: course,
-        classroom_link: courseLink
-      };
-
-      //
-      emailjs.init("tg13-Ajy-n76qkEkK");
-      emailjs.send("service_pf20md9", "template_wmueohd", params)
-  .then((response) => {
-    alert("✅ Email sent successfully!");
-    console.log("SUCCESS!", response.status, response.text);
-  })
-  .catch((error) => {
-    alert("❌ Email sending failed. Check console for details.");
-    console.error("FAILED...", error);
-  });
-
-    }
   </script>
+
 </body>
 </html>
+
 
 
 
