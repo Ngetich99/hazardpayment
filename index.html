@@ -80,6 +80,7 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <img src="hazard.png" alt="Hazard Logo" />
@@ -95,7 +96,7 @@
         <h3>Fire Safety Training</h3>
         <p>Learn essential fire prevention and response skills.</p>
         <input id="fire_email" type="email" placeholder="Enter your email" required />
-        <button onclick="payWithPaystack('Fire Safety Training', 'fire_email', 1)">Enroll & Pay KES 1</button>
+        <button onclick="payWithPaystack('Fire Safety Training', 'fire_email', 1000)">Enroll & Pay KES 1000</button>
       </div>
     </div>
 
@@ -112,7 +113,7 @@
 
     <!-- First Aid -->
     <div class="course">
-      <img src="first aid.jpeg" alt="First Aid">
+      <img src="first_aid.jpeg" alt="First Aid">
       <div class="content">
         <h3>First Aid Training</h3>
         <p>Gain lifesaving emergency response skills.</p>
@@ -123,7 +124,7 @@
 
     <!-- Fire Marshal -->
     <div class="course">
-      <img src="mashal.jpeg" alt="Fire Marshal">
+      <img src="marshal.jpeg" alt="Fire Marshal">
       <div class="content">
         <h3>Fire Marshal Training</h3>
         <p>Become certified as a fire marshal and safety leader.</p>
@@ -148,73 +149,65 @@
     © 2025 Hazard Control Technologies Ltd. All rights reserved.
   </footer>
 
-  <!-- Paystack + EmailJS -->
+  <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-  <!-- ✅ Paystack Inline Script -->
+  <!-- Paystack Inline Script -->
   <script src="https://js.paystack.co/v1/inline.js"></script>
 
   <script>
     // ✅ Initialize EmailJS
     (function() {
       emailjs.init({
-        publicKey: "tg13-Ajy-n76qkEkK" // Your public key
+        publicKey: "tg13-Ajy-n76qkEkK" // Your EmailJS public key
       });
     })();
 
-    // ✅ Function to send course access email
-    function sendCourseEmail(name, email, course) {
-      // Classroom links for each course
+    // ✅ Send course access email after payment
+    function sendCourseEmail(studentName, studentEmail, courseName) {
       const courseLinks = {
-        "Fire Safety": "https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5",
-        "Occupational Safety and Health": "https://classroom.google.com/c/occupational",
-        "First Aid": "https://classroom.google.com/c/firstaid",
-        "Disaster Preparedness": "https://classroom.google.com/c/disaster",
-        "Emergency Evacuation": "https://classroom.google.com/c/emergency"
+        "Fire Safety Training": "https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5",
+        "Occupational Safety & Health": "https://classroom.google.com/c/occupational",
+        "First Aid Training": "https://classroom.google.com/c/firstaid",
+        "Fire Marshal Training": "https://classroom.google.com/c/firemarshal",
+        "Safety Management Systems": "https://classroom.google.com/c/safetymanagement"
       };
 
       const templateParams = {
-        student_name: name,
-        student_email: email,
-        course_name: course,
-        access_link: courseLinks[course] || "https://hazardcontrol.co.ke/courses"
+        student_name: studentName,
+        student_email: studentEmail,
+        course_name: courseName,
+        access_link: courseLinks[courseName] || "https://hazardcontrol.co.ke/courses"
       };
 
       emailjs.send("service_pf20md9", "template_wmueohd", templateParams)
-        .then((response) => {
-          console.log("✅ Email sent:", response);
-          alert("✅ Payment successful! Access link sent to your email.");
+        .then(() => {
+          alert("✅ Payment successful! Course access link sent to your email.");
         })
-        .catch((error) => {
-          console.error("❌ Email sending failed:", error);
-          alert("Payment successful, but failed to send email. Please contact support.");
+        .catch(() => {
+          alert("Payment successful, but email delivery failed. Please contact support.");
         });
     }
 
-    // ✅ Function to handle Paystack payment
-    function payWithPaystack() {
-      const name = document.getElementById("student_name").value;
-      const email = document.getElementById("student_email").value;
-      const course = document.getElementById("course_name").value;
-
-      if (!name || !email || !course) {
-        alert("Please fill all fields before continuing.");
+    // ✅ Paystack integration
+    function payWithPaystack(courseName, emailFieldId, amountKES) {
+      const email = document.getElementById(emailFieldId).value;
+      if (!email) {
+        alert("Please enter your email before proceeding.");
         return;
       }
 
-      // Example: each course = KES 1000 (1000 * 100 = amount in kobo)
-      const amountKES = 1000;
       const amountKobo = amountKES * 100;
 
       let handler = PaystackPop.setup({
-        key: "pk_test_xxxxxxxxxxxxxxxxxxxxxxxxx", // Replace with your Paystack public key
+        key: "pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d", // Replace with your Paystack public key
         email: email,
         amount: amountKobo,
         currency: "KES",
         ref: "HZD" + Math.floor(Math.random() * 1000000000),
         callback: function(response) {
           console.log("Payment complete! Reference: " + response.reference);
-          sendCourseEmail(name, email, course);
+          sendCourseEmail("Student", email, courseName);
         },
         onClose: function() {
           alert("Payment window closed.");
@@ -224,13 +217,5 @@
       handler.openIframe();
     }
   </script>
-
 </body>
 </html>
-
-
-
-
-
-
-
