@@ -95,8 +95,9 @@
       <div class="content">
         <h3>Fire Safety Training</h3>
         <p>Learn essential fire prevention and response skills.</p>
+        <input id="fire_name" type="text" placeholder="Enter your name" required />
         <input id="fire_email" type="email" placeholder="Enter your email" required />
-        <button onclick="payWithPaystack('Fire Safety Training', 'fire_email', 1)">Enroll & Pay KES 1</button>
+        <button onclick="payWithPaystack('Fire Safety Training', 'fire_name', 'fire_email', 1)">Enroll & Pay KES 1</button>
       </div>
     </div>
 
@@ -106,41 +107,45 @@
       <div class="content">
         <h3>Occupational Safety & Health</h3>
         <p>Master workplace safety and compliance standards.</p>
-        <input id="occupational_email" type="email" placeholder="Enter your email" required />
-        <button onclick="payWithPaystack('Occupational Safety & Health', 'occupational_email', 5000)">Enroll & Pay KES 5000</button>
+        <input id="occ_name" type="text" placeholder="Enter your name" required />
+        <input id="occ_email" type="email" placeholder="Enter your email" required />
+        <button onclick="payWithPaystack('Occupational Safety & Health', 'occ_name', 'occ_email', 5000)">Enroll & Pay KES 5000</button>
       </div>
     </div>
 
     <!-- First Aid -->
     <div class="course">
-      <img src="first aid.jpeg" alt="First Aid">
+      <img src="firstaid.jpeg" alt="First Aid">
       <div class="content">
         <h3>First Aid Training</h3>
         <p>Gain lifesaving emergency response skills.</p>
+        <input id="firstaid_name" type="text" placeholder="Enter your name" required />
         <input id="firstaid_email" type="email" placeholder="Enter your email" required />
-        <button onclick="payWithPaystack('First Aid Training', 'firstaid_email', 10000)">Enroll & Pay KES 10000</button>
+        <button onclick="payWithPaystack('First Aid Training', 'firstaid_name', 'firstaid_email', 10000)">Enroll & Pay KES 10000</button>
       </div>
     </div>
 
-    <!-- Fire Marshal -->
+    <!-- Environmental Safety -->
     <div class="course">
-      <img src="mashal.jpeg" alt="Fire Marshal">
+      <img src="environment.jpeg" alt="Environmental Safety">
       <div class="content">
-        <h3>Fire Marshal Training</h3>
-        <p>Become certified as a fire marshal and safety leader.</p>
-        <input id="marshal_email" type="email" placeholder="Enter your email" required />
-        <button onclick="payWithPaystack('Fire Marshal Training', 'marshal_email', 8000)">Enroll & Pay KES 8000</button>
+        <h3>Environmental Safety</h3>
+        <p>Understand environmental hazards and sustainable practices.</p>
+        <input id="env_name" type="text" placeholder="Enter your name" required />
+        <input id="env_email" type="email" placeholder="Enter your email" required />
+        <button onclick="payWithPaystack('Environmental Safety', 'env_name', 'env_email', 3000)">Enroll & Pay KES 3000</button>
       </div>
     </div>
 
-    <!-- Safety Management -->
+    <!-- Electrical Safety -->
     <div class="course">
-      <img src="hmt.jpg" alt="Safety Management">
+      <img src="electrical.jpeg" alt="Electrical Safety">
       <div class="content">
-        <h3>Safety Management Systems</h3>
-        <p>Develop and manage effective safety programs.</p>
-        <input id="management_email" type="email" placeholder="Enter your email" required />
-        <button onclick="payWithPaystack('Safety Management Systems', 'management_email', 7000)">Enroll & Pay KES 7000</button>
+        <h3>Electrical Safety Awareness</h3>
+        <p>Learn how to handle electrical systems safely.</p>
+        <input id="elec_name" type="text" placeholder="Enter your name" required />
+        <input id="elec_email" type="email" placeholder="Enter your email" required />
+        <button onclick="payWithPaystack('Electrical Safety Awareness', 'elec_name', 'elec_email', 4000)">Enroll & Pay KES 4000</button>
       </div>
     </div>
   </div>
@@ -149,65 +154,32 @@
     © 2025 Hazard Control Technologies Ltd. All rights reserved.
   </footer>
 
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
   <!-- Paystack Inline Script -->
   <script src="https://js.paystack.co/v1/inline.js"></script>
 
   <script>
-    // ✅ Initialize EmailJS
-    (function() {
-      emailjs.init({
-        publicKey: "tg13-Ajy-n76qkEkK" // Your EmailJS public key
-      });
-    })();
+    const FORMSPREE_URL = "https://formspree.io/f/xeorrvlv"; // 🔴 Replace this with your Formspree URL
 
-    // ✅ Send course access email after payment
-    function sendCourseEmail(studentName, studentEmail, courseName) {
-      const courseLinks = {
-        "Fire Safety Training": "https://classroom.google.com/c/NzcwNzc5ODk4NDg4?cjc=vd64hxg5",
-        "Occupational Safety & Health": "https://classroom.google.com/c/occupational",
-        "First Aid Training": "https://classroom.google.com/c/firstaid",
-        "Fire Marshal Training": "https://classroom.google.com/c/firemarshal",
-        "Safety Management Systems": "https://classroom.google.com/c/safetymanagement"
-      };
+    function payWithPaystack(courseName, nameFieldId, emailFieldId, amountKES) {
+      const name = document.getElementById(nameFieldId).value.trim();
+      const email = document.getElementById(emailFieldId).value.trim();
 
-      const templateParams = {
-        student_name: studentName,
-        student_email: studentEmail,
-        course_name: courseName,
-        access_link: courseLinks[courseName] || "https://hazardcontrol.co.ke/courses"
-      };
-
-      emailjs.send("service_pf20md9", "template_wmueohd", templateParams)
-        .then(() => {
-          alert("✅ Payment successful! Course access link sent to your email.");
-        })
-        .catch(() => {
-          alert("Payment successful, but email delivery failed. Please contact support.");
-        });
-    }
-
-    // ✅ Paystack integration
-    function payWithPaystack(courseName, emailFieldId, amountKES) {
-      const email = document.getElementById(emailFieldId).value;
-      if (!email) {
-        alert("Please enter your email before proceeding.");
+      if (!name || !email) {
+        alert("Please enter your name and email before proceeding.");
         return;
       }
 
       const amountKobo = amountKES * 100;
 
       let handler = PaystackPop.setup({
-        key: "pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d", // Replace with your Paystack public key
+        key: "pk_live_65d03c0b32d76e6a0cb8c5a709ae13764f95608d", // Your Paystack public key
         email: email,
         amount: amountKobo,
         currency: "KES",
         ref: "HZD" + Math.floor(Math.random() * 1000000000),
         callback: function(response) {
           console.log("Payment complete! Reference: " + response.reference);
-          sendCourseEmail("Student", email, courseName);
+          sendToFormspree(name, email, courseName, response.reference);
         },
         onClose: function() {
           alert("Payment window closed.");
@@ -216,8 +188,27 @@
 
       handler.openIframe();
     }
+
+    function sendToFormspree(name, email, course, reference) {
+      fetch(FORMSPREE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          course: course,
+          payment_reference: reference,
+        }),
+      })
+      .then(res => {
+        if (res.ok) {
+          alert(`✅ Payment successful! Confirmation sent to ${email}.`);
+        } else {
+          alert("Payment was successful, but we couldn’t record your details. Please contact support.");
+        }
+      })
+      .catch(() => alert("Network error: Could not send form data."));
+    }
   </script>
 </body>
 </html>
-
-
